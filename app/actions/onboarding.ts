@@ -60,5 +60,5 @@ export async function completeOnboarding(prevState: any, formData: FormData) {
         return { message: 'Failed to update profile' };
     }
 
-    redirect('/');
+    return { message: 'Success', success: true };
 }

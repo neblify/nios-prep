@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
+import { useUser, useSession } from '@clerk/nextjs';
 import { completeOnboarding } from '@/app/actions/onboarding';
 import { useRouter } from 'next/navigation';
 import { useLayoutEffect, useActionState } from 'react';
@@ -10,11 +10,22 @@ export default function OnboardingPage() {
     const router = useRouter();
     const [state, action] = useActionState(completeOnboarding, null);
 
+    const { session } = useSession();
+
     useLayoutEffect(() => {
-        if (isLoaded && user?.publicMetadata?.role) {
+        if (state?.success && session) {
+            session.reload().then(() => {
+                router.push('/');
+            });
+        }
+    }, [state?.success, session, router]);
+
+    // Cleanup old redirect logic that might conflict or be redundant if we rely on state
+    useLayoutEffect(() => {
+        if (isLoaded && user?.publicMetadata?.role && !state?.success) {
             router.push('/');
         }
-    }, [isLoaded, user, router]);
+    }, [isLoaded, user, router, state?.success]);
 
     if (!isLoaded) {
         return (

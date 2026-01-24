@@ -1,14 +1,18 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const { userId, sessionClaims } = await auth();
+  const { userId } = await auth();
 
   if (!userId) {
     redirect("/sign-in");
   }
 
-  const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  const role = user.publicMetadata.role as string | undefined;
+
+  console.log("Root Page: Role found:", role);
 
   if (!role) {
     redirect("/onboarding");

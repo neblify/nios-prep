@@ -4,13 +4,15 @@ import Test from "@/lib/db/models/Test";
 import { notFound, redirect } from "next/navigation";
 import TestTaker from "./TestTaker";
 
-export default async function TestPage({ params }: { params: { id: string } }) {
+export default async function TestPage({ params }: { params: Promise<{ id: string }> }) {
     const { userId } = await auth();
     if (!userId) redirect("/sign-in");
 
+    const { id } = await params;
+
     await dbConnect();
     // @ts-ignore
-    const test = await Test.findById(params.id);
+    const test = await Test.findById(id);
 
     if (!test) {
         notFound();

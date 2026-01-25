@@ -6,13 +6,15 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 
-export default async function ResultPage({ params }: { params: { id: string } }) {
+export default async function ResultPage({ params }: { params: Promise<{ id: string }> }) {
     const { userId } = await auth();
     if (!userId) redirect("/sign-in");
 
+    const { id } = await params;
+
     await dbConnect();
     // @ts-ignore
-    const result: any = await Result.findById(params.id).populate('testId');
+    const result: any = await Result.findById(id).populate('testId');
 
     if (!result) notFound();
 

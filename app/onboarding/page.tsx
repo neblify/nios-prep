@@ -3,12 +3,13 @@
 import { useUser, useSession } from '@clerk/nextjs';
 import { completeOnboarding } from '@/app/actions/onboarding';
 import { useRouter } from 'next/navigation';
-import { useLayoutEffect, useActionState } from 'react';
+import { useLayoutEffect, useActionState, useState } from 'react';
 
 export default function OnboardingPage() {
     const { user, isLoaded } = useUser();
     const router = useRouter();
     const [state, action] = useActionState(completeOnboarding, null);
+    const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
     const { session } = useSession();
 
@@ -52,7 +53,11 @@ export default function OnboardingPage() {
                         {['student', 'teacher', 'parent'].map((role) => (
                             <label
                                 key={role}
-                                className="relative flex cursor-pointer rounded-lg border border-gray-200 p-4 shadow-sm focus:outline-none hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500"
+                                className={`relative flex cursor-pointer rounded-lg border p-4 shadow-sm focus:outline-none hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 ${selectedRole === role
+                                    ? 'border-indigo-500 ring-2 ring-indigo-500'
+                                    : 'border-gray-200'
+                                    }`}
+                                onClick={() => setSelectedRole(role)}
                             >
                                 <input
                                     type="radio"
@@ -60,6 +65,8 @@ export default function OnboardingPage() {
                                     value={role}
                                     className="sr-only"
                                     required
+                                    checked={selectedRole === role}
+                                    onChange={() => setSelectedRole(role)}
                                 />
                                 <span className="flex flex-1">
                                     <span className="flex flex-col">
@@ -72,7 +79,7 @@ export default function OnboardingPage() {
                                     </span>
                                 </span>
                                 <svg
-                                    className="h-5 w-5 text-indigo-600 hidden peer-checked:block"
+                                    className={`h-5 w-5 text-indigo-600 ${selectedRole === role ? 'block' : 'hidden'}`}
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20"
                                     fill="currentColor"

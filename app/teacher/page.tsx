@@ -49,7 +49,7 @@ export default async function TeacherDashboard() {
                         </div>
 
                         <div className="mt-6 pt-4 border-t border-gray-50 flex justify-between items-center text-sm">
-                            <button className="text-indigo-600 hover:text-indigo-800 font-medium">View Results</button>
+                            <Link href={`/teacher/test/${test._id}/results`} className="text-indigo-600 hover:text-indigo-800 font-medium">View Results</Link>
                             <Link href={`/teacher/create-test/${test._id}`} className="text-gray-500 hover:text-gray-700 font-medium">Edit Test</Link>
                         </div>
                     </div>

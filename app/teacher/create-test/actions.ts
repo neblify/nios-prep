@@ -67,3 +67,45 @@ export async function createTest(prevState: any, formData: FormData) {
 
     redirect('/teacher');
 }
+
+export async function updateTest(prevState: any, formData: FormData) {
+    const { userId } = await auth();
+
+    if (!userId) {
+        return { message: 'Unauthorized' };
+    }
+
+    const testId = formData.get('testId');
+    const rawData = {
+        title: formData.get('title'),
+        subject: formData.get('subject'),
+        board: formData.get('board'),
+        grade: formData.get('grade'),
+        visibility: formData.get('visibility'),
+        sections: JSON.parse(formData.get('sections') as string || '[]'),
+    }
+
+    const validated = createTestSchema.safeParse(rawData);
+
+    if (!validated.success) {
+        console.error(validated.error.flatten());
+        return { message: 'Invalid Input: ' + JSON.stringify(validated.error.flatten().fieldErrors) };
+    }
+
+    try {
+        await dbConnect();
+        // Ensure user owns the test
+        await Test.findOneAndUpdate(
+            { _id: testId, createdBy: userId },
+            {
+                ...validated.data,
+                // Do not update isPublished or other status fields blindly if not intended
+            }
+        );
+    } catch (e) {
+        console.error(e);
+        return { message: 'Failed to update test' };
+    }
+
+    redirect('/teacher');
+}

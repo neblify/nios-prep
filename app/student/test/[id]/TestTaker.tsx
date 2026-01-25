@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ITest, IQuestion } from '@/lib/db/models/Test';
 import { submitTest } from './actions';
 import { cn } from '@/lib/utils';
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils';
 export default function TestTaker({ test, userId }: { test: ITest; userId: string }) {
     const [answers, setAnswers] = useState<Record<string, any>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const router = useRouter();
 
     const handleAnswerChange = (questionId: string, value: any) => {
         setAnswers((prev) => ({
@@ -21,8 +23,15 @@ export default function TestTaker({ test, userId }: { test: ITest; userId: strin
 
         setIsSubmitting(true);
         try {
-            await submitTest(test._id as unknown as string, answers);
+            const result = await submitTest(test._id as unknown as string, answers);
+            if (result && 'success' in result && result.success) {
+                router.push(`/student/result/${result.resultId}`);
+            } else {
+                alert('Failed to submit test: ' + (result?.message || 'Unknown error'));
+                setIsSubmitting(false);
+            }
         } catch (error) {
+            console.error('Error submitting test:', error);
             alert('Failed to submit test');
             setIsSubmitting(false);
         }

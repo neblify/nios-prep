@@ -44,5 +44,5 @@ export async function submitTest(testId: string, answers: Record<string, any>) {
         weakAreas: aiResult.weakAreas,
     });
 
-    redirect(`/student/result/${result._id}`);
+    return { success: true, resultId: result._id.toString() };
 }

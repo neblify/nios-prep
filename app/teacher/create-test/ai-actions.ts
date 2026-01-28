@@ -4,6 +4,58 @@ import Groq from "groq-sdk";
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+
+// Polyfills for pdf-parse / pdfjs-dist in Node environment
+// @ts-ignore
+if (typeof Promise.withResolvers === 'undefined') {
+    // @ts-ignore
+    if (typeof window !== 'undefined') {
+        // browser logic (unlikely here)
+    } else {
+        // Node polyfills
+        // @ts-ignore
+        global.Promise.withResolvers = function () {
+            let resolve, reject;
+            const promise = new Promise((res, rej) => {
+                resolve = res;
+                reject = rej;
+            });
+            return { promise, resolve, reject };
+        };
+    }
+}
+
+// Global mocks for DOM APIs required by pdfjs-dist legacy builds
+// @ts-ignore
+if (!global.DOMMatrix) {
+    // @ts-ignore
+    global.DOMMatrix = class DOMMatrix {
+        constructor() {
+            // @ts-ignore
+            this.a = 1; this.b = 0; this.c = 0; this.d = 1; this.e = 0; this.f = 0;
+        }
+        multiply() { return this; }
+        translate() { return this; }
+        scale() { return this; }
+        transformPoint(p: any) { return p; }
+    };
+}
+// @ts-ignore
+if (!global.ImageData) {
+    // @ts-ignore
+    global.ImageData = class ImageData {
+        constructor(width: number, height: number) {
+            // @ts-ignore
+            this.width = width; this.height = height; this.data = new Uint8ClampedArray(width * height * 4);
+        }
+    };
+}
+// @ts-ignore
+if (!global.Path2D) {
+    // @ts-ignore
+    global.Path2D = class Path2D { };
+}
+
 const pdf = require('pdf-parse');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });

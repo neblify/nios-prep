@@ -22,6 +22,8 @@ const BOARDS = ['NIOS', 'CBSE', 'ICSE', 'State Board'];
 const NIOS_LEVELS = ['A', 'B', 'C'];
 const STANDARD_LEVELS = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 
+const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
 export default function CreateOrEditTestPage() {
     // Determine if we are in edit mode
     const params = useParams();
@@ -44,7 +46,7 @@ export default function CreateOrEditTestPage() {
 
     // Sections State
     const [sections, setSections] = useState<any[]>([
-        { id: Date.now(), title: 'Section A', description: '', questions: [] }
+        { id: generateId(), title: 'Section A', description: '', questions: [] }
     ]);
 
     // AI Modal State
@@ -55,6 +57,7 @@ export default function CreateOrEditTestPage() {
     const [aiDifficulty, setAiDifficulty] = useState('Medium');
     const [isGenerating, setIsGenerating] = useState(false);
 
+    // Fetch test data if in edit mode
     // Fetch test data if in edit mode
     useEffect(() => {
         if (isEditMode) {
@@ -72,14 +75,23 @@ export default function CreateOrEditTestPage() {
                         // Assuming backend returns sections as matches. 
                         // If legacy, might need adapting.
                         if (data.test.sections && data.test.sections.length > 0) {
-                            setSections(data.test.sections);
+                            // Sanitize IDs: Existing data might have duplicate or numeric IDs from Date.now() collisions
+                            const sanitizedSections = data.test.sections.map((sec: any) => ({
+                                ...sec,
+                                id: generateId(),
+                                questions: sec.questions?.map((q: any) => ({
+                                    ...q,
+                                    id: generateId()
+                                })) || []
+                            }));
+                            setSections(sanitizedSections);
                         } else if (data.test.questions) {
                             // Legacy fallback
                             setSections([{
-                                id: Date.now(),
+                                id: generateId(),
                                 title: 'General Section',
                                 description: 'Imported questions',
-                                questions: data.test.questions
+                                questions: data.test.questions.map((q: any) => ({ ...q, id: generateId() })) // Sanitize legacy questions too
                             }]);
                         }
                     }
@@ -92,7 +104,7 @@ export default function CreateOrEditTestPage() {
 
     // ... (Existing helper functions kept same, but re-included for completeness)
     const addSection = () => {
-        setSections([...sections, { id: Date.now(), title: `Section ${String.fromCharCode(65 + sections.length)}`, description: '', questions: [] }]);
+        setSections([...sections, { id: generateId(), title: `Section ${String.fromCharCode(65 + sections.length)}`, description: '', questions: [] }]);
     };
 
     const removeSection = (secIndex: number) => {
@@ -108,7 +120,7 @@ export default function CreateOrEditTestPage() {
     const addQuestionExp = (secIndex: number) => {
         const newSecs = [...sections];
         newSecs[secIndex].questions.push({
-            id: Date.now(),
+            id: generateId(),
             text: '',
             type: 'mcq',
             options: ['', '', '', ''],
@@ -131,6 +143,7 @@ export default function CreateOrEditTestPage() {
     };
 
     const handleSubmit = (formData: FormData) => {
+        console.log("Submitting form with sections:", sections);
         formData.set('sections', JSON.stringify(sections));
         if (isEditMode && testId) {
             formData.set('testId', testId);
@@ -138,6 +151,17 @@ export default function CreateOrEditTestPage() {
         // @ts-ignore
         formAction(formData);
     }
+
+    useEffect(() => {
+        if (state?.message) {
+            console.log("Server Action Result:", state);
+            if (state.message.includes('success')) {
+                // Success logic if any
+            } else {
+                alert(`Error: ${state.message}`);
+            }
+        }
+    }, [state]);
 
     // AI Handler
     const handleAiGenerate = async () => {
@@ -150,10 +174,10 @@ export default function CreateOrEditTestPage() {
             if (res.data) {
                 // Add a new section for these questions
                 const newSection = {
-                    id: Date.now(),
+                    id: generateId(),
                     title: `AI Generated: ${aiTopic}`,
                     description: `${aiDifficulty} - ${aiType}`,
-                    questions: res.data
+                    questions: res.data.map((q: any) => ({ ...q, id: generateId() })) // Ensure AI questions also get new unique IDs if needed, or rely on server-side ID but client-side ID is safer for lists
                 };
                 setSections([...sections, newSection]);
                 setIsAiModalOpen(false);

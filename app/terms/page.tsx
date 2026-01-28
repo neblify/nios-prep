@@ -112,10 +112,8 @@ export default function TermsOfService() {
                     <p>Any disputes arising from or relating to these Terms shall be subject to the exclusive jurisdiction of the courts located in <strong>Mumbai, Maharashtra, India</strong>.</p>
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-10">13. Contact Us</h2>
-                    <p>If you have any questions about these Terms, please contact us at:</p>
-                    <p className="mt-4">
-                        <strong>Email:</strong> [your-email@example.com] <br />
-                        (Replace with your actual contact email – highly recommended)
+                    <p>If you have any questions about these Terms, please contact us at:
+                        <strong> support@neblify.com </strong>
                     </p>
 
                     <hr className="my-10 border-gray-200" />

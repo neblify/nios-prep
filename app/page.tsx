@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Hero } from "./_components/landing/Hero";
 import { Features } from "./_components/landing/Features";
 import { RoleInfo } from "./_components/landing/RoleInfo";
-import { Footer } from "./_components/landing/Footer";
+
 
 export default async function Home() {
   const { userId } = await auth();
@@ -14,7 +14,6 @@ export default async function Home() {
         <Hero />
         <Features />
         <RoleInfo />
-        <Footer />
       </main>
     );
   }

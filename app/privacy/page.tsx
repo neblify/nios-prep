@@ -13,10 +13,10 @@ export default function PrivacyPolicy() {
                     <p className="text-base font-semibold leading-7 text-indigo-600">Legal</p>
                     <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Privacy Policy</h1>
                     <p className="mt-6 text-xl leading-8 text-gray-700">
-                        **Effective Date:** January 28, 2026
+                        <strong>Effective Date:</strong> January 28, 2026
                     </p>
                     <p className="mt-2 text-sm text-gray-500">
-                        **Website:** https://nios-prep.vercel.app/ ("we", "us", "our", "NIOS Prep")
+                        <strong>Website:</strong> https://nios-prep.vercel.app/ ("we", "us", "our", "NIOS Prep")
                     </p>
                 </div>
 
@@ -91,7 +91,7 @@ export default function PrivacyPolicy() {
                     </ul>
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-10">5. Data Storage & Security</h2>
-                    <p>Your data is primarily stored on Vercel infrastructure (servers located mainly in [list regions if known, e.g. Europe/US/Asia]).</p>
+                    <p>Your data is primarily stored on Vercel infrastructure (servers located mainly in India).</p>
                     <p>We implement reasonable technical and organizational measures to protect your information. However, no method of transmission or storage is 100% secure. We cannot guarantee absolute security.</p>
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-10">6. Data Retention</h2>
@@ -125,12 +125,9 @@ export default function PrivacyPolicy() {
                     <p>Significant changes will be communicated via a notice on the website (if feasible).</p>
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-10">11. Contact Us</h2>
-                    <p>If you have questions about this Privacy Policy or our data practices, please contact:</p>
-                    <p className="mt-4">
-                        <strong>Email:</strong> [your-email@example.com] <br />
-                        (Replace with your actual contact email – highly recommended to provide one)
-                    </p>
-                    <p className="mt-4">Or reach out via any contact form available on the site.</p>
+                    <p>If you have questions about this Privacy Policy or our data practices, please contact:
+                        <strong> support@neblify.com </strong>
+                        Or reach out via any contact form available on the site.</p>
 
                     <hr className="my-10 border-gray-200" />
                     <p className="text-sm text-gray-500">Thank you for using NIOS Prep. We value your trust.</p>

@@ -10,7 +10,7 @@ export default async function Home() {
 
   if (!userId) {
     return (
-      <main className="min-h-screen bg-white">
+      <main id="main-content" className="min-h-screen bg-white">
         <Hero />
         <Features />
         <RoleInfo />

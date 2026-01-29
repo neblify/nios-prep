@@ -195,7 +195,7 @@ export default function CreateTestPage() {
                         <div className="grid gap-6 md:grid-cols-2">
                             <div className="col-span-2">
                                 <label className="block text-sm font-medium text-gray-700">Test Title</label>
-                                <input name="title" type="text" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" placeholder="e.g. Science Mid-Term" />
+                                <input name="title" type="text" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900" placeholder="e.g. Science Mid-Term" />
                             </div>
 
                             <div>
@@ -227,12 +227,12 @@ export default function CreateTestPage() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Subject</label>
-                                <input name="subject" type="text" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" placeholder="e.g. Mathematics" />
+                                <input name="subject" type="text" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900" placeholder="e.g. Mathematics" />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Visibility</label>
-                                <select name="visibility" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+                                <select name="visibility" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900 bg-white">
                                     <option value="public">Public (All Students)</option>
                                     <option value="private">Private (Invite Only)</option>
                                 </select>
@@ -275,15 +275,15 @@ export default function CreateTestPage() {
                                             <div className="grid gap-4 mb-4">
                                                 <div className="flex gap-4">
                                                     <div className="flex-1">
-                                                        <textarea value={q.text} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'text', e.target.value)} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder={`Question ${qIndex + 1}`} rows={2} />
+                                                        <textarea value={q.text} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'text', e.target.value)} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900" placeholder={`Question ${qIndex + 1}`} rows={2} />
                                                     </div>
                                                     <div className="w-1/4">
-                                                        <select value={q.type} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'type', e.target.value)} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                                        <select value={q.type} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'type', e.target.value)} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white">
                                                             {QUESTION_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                                                         </select>
                                                     </div>
                                                     <div className="w-20">
-                                                        <input type="number" value={q.marks} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'marks', parseInt(e.target.value))} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500" min={1} />
+                                                        <input type="number" value={q.marks} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'marks', parseInt(e.target.value))} className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900" min={1} />
                                                     </div>
                                                 </div>
 
@@ -292,14 +292,14 @@ export default function CreateTestPage() {
                                                 {q.type === 'mcq' && (
                                                     <div className="grid grid-cols-2 gap-2 bg-gray-50 p-3 rounded-md">
                                                         {q.options.map((opt: string, optIndex: number) => (
-                                                            <input key={optIndex} type="text" value={opt} onChange={(e) => { const newOpts = [...q.options]; newOpts[optIndex] = e.target.value; updateQuestionExp(secIndex, qIndex, 'options', newOpts); }} className="block w-full rounded border-gray-200 text-sm" placeholder={`Option ${optIndex + 1}`} />
+                                                            <input key={optIndex} type="text" value={opt} onChange={(e) => { const newOpts = [...q.options]; newOpts[optIndex] = e.target.value; updateQuestionExp(secIndex, qIndex, 'options', newOpts); }} className="block w-full rounded border-gray-200 text-sm text-gray-900" placeholder={`Option ${optIndex + 1}`} />
                                                         ))}
-                                                        <input type="text" value={q.correctAnswer} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'correctAnswer', e.target.value)} className="col-span-2 block w-full rounded border-green-200 bg-green-50 text-sm placeholder-green-600" placeholder="Correct Option (Exact Match)" />
+                                                        <input type="text" value={q.correctAnswer} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'correctAnswer', e.target.value)} className="col-span-2 block w-full rounded border-green-200 bg-green-50 text-sm placeholder-green-600 text-gray-900" placeholder="Correct Option (Exact Match)" />
                                                     </div>
                                                 )}
 
                                                 {!['mcq'].includes(q.type) && (
-                                                    <input type="text" value={q.correctAnswer} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'correctAnswer', e.target.value)} className="block w-full rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500" placeholder="Expected Answer / Key" />
+                                                    <input type="text" value={q.correctAnswer} onChange={(e) => updateQuestionExp(secIndex, qIndex, 'correctAnswer', e.target.value)} className="block w-full rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm focus:border-green-500 focus:ring-green-500 text-gray-900" placeholder="Expected Answer / Key" />
                                                 )}
                                             </div>
                                         </div>
@@ -350,7 +350,7 @@ export default function CreateTestPage() {
                                     type="text"
                                     value={aiTopic}
                                     onChange={(e) => setAiTopic(e.target.value)}
-                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                     placeholder="e.g. Newton's Laws of Motion"
                                     autoFocus
                                 />
@@ -362,7 +362,7 @@ export default function CreateTestPage() {
                                     <select
                                         value={aiType}
                                         onChange={(e) => setAiType(e.target.value)}
-                                        className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white"
                                     >
                                         <option value="mixed">Mixed Types</option>
                                         {QUESTION_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
@@ -373,7 +373,7 @@ export default function CreateTestPage() {
                                     <select
                                         value={aiDifficulty}
                                         onChange={(e) => setAiDifficulty(e.target.value)}
-                                        className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white"
                                     >
                                         <option>Easy</option>
                                         <option>Medium</option>

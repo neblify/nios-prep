@@ -6,6 +6,8 @@ export interface IUser extends Document {
   role: 'student' | 'teacher' | 'parent';
   firstName?: string;
   lastName?: string;
+  board?: string;
+  grade?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +23,8 @@ const UserSchema = new Schema<IUser>(
     },
     firstName: { type: String },
     lastName: { type: String },
+    board: { type: String },
+    grade: { type: String },
   },
   { timestamps: true }
 );

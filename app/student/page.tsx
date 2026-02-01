@@ -4,15 +4,30 @@ import Test from '@/lib/db/models/Test';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { Play } from 'lucide-react';
+import User from '@/lib/db/models/User';
 
 export default async function StudentDashboard() {
+  const { userId } = await auth();
   await dbConnect();
-  // Fetch only published and public tests
+
   // @ts-ignore
-  const tests = await Test.find({
+  const user = await User.findOne({ clerkId: userId });
+
+  const query: any = {
     isPublished: true,
     visibility: 'public',
-  }).sort({ createdAt: -1 });
+  };
+
+  // If user has profile set, filter by it
+  if (user?.board) {
+    query.board = user.board;
+  }
+  if (user?.grade) {
+    query.grade = user.grade;
+  }
+
+  // @ts-ignore
+  const tests = await Test.find(query).sort({ createdAt: -1 });
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
@@ -21,6 +36,25 @@ export default async function StudentDashboard() {
         <p className="text-gray-500 mt-1">
           Available tests for you to attempt.
         </p>
+        {(!user?.board || !user?.grade) && (
+          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start justify-between">
+            <div className="flex gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <h3 className="font-semibold text-yellow-800">Complete your profile</h3>
+                <p className="text-sm text-yellow-700 mt-1">
+                  Set your Board and Grade to see relevant tests. Currently showing all public tests.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/student/profile"
+              className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-md text-sm font-medium hover:bg-yellow-200 transition-colors"
+            >
+              Update Profile
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -41,7 +75,15 @@ export default async function StudentDashboard() {
             </div>
 
             <div className="text-sm text-gray-500 space-y-2">
-              <p>{test.questions.length} Questions</p>
+              <p>
+                {(test.questions?.length || 0) +
+                  (test.sections?.reduce(
+                    (acc: number, section: any) =>
+                      acc + (section.questions?.length || 0),
+                    0
+                  ) || 0)}{' '}
+                Questions
+              </p>
               <p>Added on {formatDate(test.createdAt)}</p>
             </div>
 

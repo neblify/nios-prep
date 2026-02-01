@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db/connect';
 import Result, { IResult } from '@/lib/db/models/Result';
 import Test from '@/lib/db/models/Test';
+import Question from '@/lib/db/models/Question'; // Register Question model
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
@@ -18,7 +19,17 @@ export default async function ResultPage({
 
   await dbConnect();
   // @ts-ignore
-  const result: any = await Result.findById(id).populate('testId');
+  const result: any = await Result.findById(id).populate({
+    path: 'testId',
+    populate: [
+      {
+        path: 'sections.questions',
+      },
+      {
+        path: 'questions',
+      },
+    ],
+  });
 
   if (!result) notFound();
 

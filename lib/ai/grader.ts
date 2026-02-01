@@ -84,9 +84,13 @@ export async function gradeTestWithAI(
 
     Instructions:
     1. Evaluate each answer. For objective questions (MCQ, True/False, Match), check strict correctness. 
-    2. For 'fill_in_blanks', IGNORE case differences and trailing/leading whitespace. If the word is correct but capitalized differently, mark it FULLY CORRECT with no negative feedback.
+    2. For 'fill_in_blanks', 'single_word', and 'one_sentence':
+       - IGNORE case differences and trailing/leading whitespace.
+       - IGNORE minor spelling mistakes if the phonetic sound is correct or it is clearly a typo (e.g. "Pythen" instead of "Python").
+       - If there is a spelling mistake but the answer is otherwise correct, give PARTIAL marks (e.g. 0.5 or 0.8 marks).
+       - In the feedback, mention the correct spelling if they made a mistake.
     3. For subjective (Brief Answer, etc), evaluate relevance and accuracy.
-    4. Assign marks based on correctness. Partial marks allowed for subjective.
+    4. Assign marks based on correctness. Partial marks allowed for subjective and spelling errors.
     5. Provide brief feedback for each answer if incorrect or could be improved.
     6. Identify weak areas based on wrong answers.
     7. Provide overall feedback.
@@ -99,7 +103,7 @@ export async function gradeTestWithAI(
       "results": [
         {
           "questionId": string, // Use the exact "id" provided in input
-          "isCorrect": boolean,
+          "isCorrect": boolean, // Set to true if marksObtained > 0
           "marksObtained": number,
           "feedback": string
         }

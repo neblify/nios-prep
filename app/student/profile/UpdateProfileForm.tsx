@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { updateProfile } from './actions';
 import { useRouter } from 'next/navigation';
+import { BOARDS, getGradesForBoard } from '@/lib/constants';
 
 export default function UpdateProfileForm({
     initialBoard,
@@ -12,7 +13,10 @@ export default function UpdateProfileForm({
     initialGrade: string;
 }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [board, setBoard] = useState(initialBoard);
     const router = useRouter();
+
+    const gradeOptions = getGradesForBoard(board);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,14 +46,16 @@ export default function UpdateProfileForm({
                     name="board"
                     id="board"
                     required
-                    defaultValue={initialBoard}
+                    value={board}
+                    onChange={(e) => setBoard(e.target.value)}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 >
                     <option value="">Select Board</option>
-                    <option value="NIOS">NIOS</option>
-                    <option value="CBSE">CBSE</option>
-                    <option value="ICSE">ICSE</option>
-                    <option value="State Board">State Board</option>
+                    {BOARDS.map((b) => (
+                        <option key={b} value={b}>
+                            {b}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -65,11 +71,15 @@ export default function UpdateProfileForm({
                     id="grade"
                     required
                     defaultValue={initialGrade}
+                    key={board} // Reset when board changes
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 >
                     <option value="">Select Grade</option>
-                    <option value="10">Class 10 (Secondary)</option>
-                    <option value="12">Class 12 (Senior Secondary)</option>
+                    {gradeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
                 </select>
             </div>
 

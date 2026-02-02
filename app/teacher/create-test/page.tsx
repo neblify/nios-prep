@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
 import { createTest } from './actions';
 import { extractQuestionsFromPdf, generateQuestionsAI } from './ai-actions';
 import {
@@ -30,6 +30,14 @@ import { BOARDS, getGradesForBoard } from '@/lib/constants';
 
 export default function CreateTestPage() {
   const [state, formAction] = useActionState(createTest, null);
+
+  useEffect(() => {
+    if (state?.message) {
+      if (!state.message.includes('success') && !state.message.includes('Redirecting')) {
+        alert(`Error: ${state.message}`);
+      }
+    }
+  }, [state]);
 
   // Test Metadata State
   const [board, setBoard] = useState('NIOS');

@@ -42,6 +42,13 @@ export interface ITest extends Document {
   isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;
+  versionHistory?: IVersionHistory[];
+}
+
+export interface IVersionHistory {
+  modifiedAt: Date;
+  modifiedBy: string;
+  action?: string;
 }
 
 const QuestionSchema = new Schema<IQuestion>({
@@ -74,6 +81,13 @@ const TestSchema = new Schema<ITest>(
     sections: [SectionSchema],
     questions: [QuestionSchema], // Deprecated but Schema remains valid
     isPublished: { type: Boolean, default: false },
+    versionHistory: [
+      {
+        modifiedAt: { type: Date, default: Date.now },
+        modifiedBy: { type: String, required: true },
+        action: { type: String }, // Optional: describe what changed e.g. "update", "publish"
+      },
+    ],
   },
   { timestamps: true }
 );

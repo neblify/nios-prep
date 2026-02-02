@@ -1,26 +1,91 @@
 import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/db/connect';
-import Test, { ITest } from '@/lib/db/models/Test';
-import { Plus } from 'lucide-react';
+import Test from '@/lib/db/models/Test';
+import User from '@/lib/db/models/User';
+import { Plus, Search, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 
-export default async function TeacherDashboard() {
+export const dynamic = 'force-dynamic';
+
+interface Props {
+  searchParams: Promise<{
+    query?: string;
+    subject?: string;
+    board?: string;
+    sort?: string;
+    creator?: string;
+  }>;
+}
+
+export default async function TeacherDashboard(props: Props) {
+  const searchParams = await props.searchParams;
   const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
+  }
+
   await dbConnect();
 
-  // @ts-ignore
-  const tests = await Test.find({ createdBy: userId }).sort({ createdAt: -1 });
+  const query = searchParams.query || '';
+  const subject = searchParams.subject || '';
+  const board = searchParams.board || '';
+  const sort = searchParams.sort || 'createdAt_desc';
+
+  // Build Filter
+  const filter: any = {};
+  if (query) {
+    filter.title = { $regex: query, $options: 'i' };
+  }
+  if (subject && subject !== 'All') {
+    filter.subject = subject;
+  }
+  if (board && board !== 'All') {
+    filter.board = board;
+  }
+
+  // Build Sort
+  let sortOptions: any = {};
+  switch (sort) {
+    case 'createdAt_desc':
+      sortOptions = { createdAt: -1 };
+      break;
+    case 'createdAt_asc':
+      sortOptions = { createdAt: 1 };
+      break;
+    case 'updatedAt_desc':
+      sortOptions = { updatedAt: -1 };
+      break;
+    case 'updatedAt_asc':
+      sortOptions = { updatedAt: 1 };
+      break;
+    case 'title_asc':
+      sortOptions = { title: 1 };
+      break;
+    default:
+      sortOptions = { createdAt: -1 };
+  }
+
+  const tests = await Test.find(filter).sort(sortOptions).lean();
+
+  // Get Authors
+  const creatorIds = Array.from(new Set(tests.map((t: any) => t.createdBy)));
+  const creators = await User.find({ clerkId: { $in: creatorIds } }).lean();
+  const creatorMap = new Map(creators.map((c: any) => [c.clerkId, c]));
+
+  // Get distinct values for filters
+  const subjects = await Test.distinct('subject');
+  const boards = await Test.distinct('board');
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Teacher Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">All Tests</h1>
           <p className="text-gray-500 mt-1">
-            Manage your tests and view student progress.
+            Browse and manage all tests in the system.
           </p>
         </div>
         <Link
@@ -32,70 +97,134 @@ export default async function TeacherDashboard() {
         </Link>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tests.map((test: any) => (
-          <div
-            key={test._id}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900">
-                  {test.title}
-                </h3>
-                <span className="inline-block bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded-full mt-1">
-                  {test.subject}
-                </span>
-              </div>
-              <span
-                className={`px-2 py-1 text-xs rounded-full ${test.isPublished ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}
-              >
-                {test.isPublished ? 'Published' : 'Draft'}
-              </span>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        {/* Filters Toolbar */}
+        <div className="p-4 border-b border-gray-200 bg-gray-50/50">
+          <form className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                name="query"
+                placeholder="Search tests..."
+                defaultValue={query}
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+              />
             </div>
 
-            <div className="text-sm text-gray-500 space-y-2">
-              <p>
-                {test.sections?.reduce(
-                  (acc: number, section: any) =>
-                    acc + (section.questions?.length || 0),
-                  0
-                ) || 0}{' '}
-                Questions
-              </p>
-              <p>Created on {formatDate(test.createdAt)}</p>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-gray-50 flex justify-between items-center text-sm">
-              <Link
-                href={`/teacher/test/${test._id}/results`}
-                className="text-indigo-600 hover:text-indigo-800 font-medium"
-              >
-                View Results
-              </Link>
-              <Link
-                href={`/teacher/create-test/${test._id}`}
-                className="text-gray-500 hover:text-gray-700 font-medium"
-              >
-                Edit Test
-              </Link>
-            </div>
-          </div>
-        ))}
-
-        {tests.length === 0 && (
-          <div className="col-span-full text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-            <p className="text-gray-500 mb-4">
-              You haven't created any tests yet.
-            </p>
-            <Link
-              href="/teacher/create-test"
-              className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
+            <select
+              name="subject"
+              defaultValue={subject}
+              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
             >
-              Create your first test
+              <option value="">All Subjects</option>
+              {subjects.map((s: string) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+
+            <select
+              name="board"
+              defaultValue={board}
+              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+            >
+              <option value="">All Boards</option>
+              {boards.map((b: string) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+
+            <select
+              name="sort"
+              defaultValue={sort}
+              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+            >
+              <option value="createdAt_desc">Newest First</option>
+              <option value="createdAt_asc">Oldest First</option>
+              <option value="updatedAt_desc">Recently Updated</option>
+              <option value="title_asc">Name (A-Z)</option>
+            </select>
+
+            <button type="submit" className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Apply
+            </button>
+            <Link href="/teacher" className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 flex items-center">
+              Clear
             </Link>
-          </div>
-        )}
+          </form>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-gray-600">
+            <thead className="bg-gray-50 text-xs uppercase font-medium text-gray-500">
+              <tr>
+                <th className="px-6 py-4">Test Name</th>
+                <th className="px-6 py-4">Subject & Board</th>
+                <th className="px-6 py-4">Questions</th>
+                <th className="px-6 py-4">Created By</th>
+                <th className="px-6 py-4">Dates</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {tests.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
+                    No tests found matching your filters.
+                  </td>
+                </tr>
+              ) : (
+                tests.map((test: any) => {
+                  const creator = creatorMap.get(test.createdBy);
+                  const creatorName = creator ? `${creator.firstName || ''} ${creator.lastName || ''}`.trim() || creator.email : 'Unknown';
+                  const questionCount = test.sections?.reduce((acc: number, s: any) => acc + (s.questions?.length || 0), 0) || 0;
+
+                  return (
+                    <tr key={test._id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-gray-900">
+                        {test.title}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col">
+                          <span className="font-medium text-gray-900">{test.subject}</span>
+                          <span className="text-gray-400 text-xs">{test.board} {test.grade && `• Class ${test.grade}`}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {questionCount}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-xs text-indigo-600 font-bold uppercase">
+                            {creatorName.charAt(0)}
+                          </div>
+                          <span className="truncate max-w-[120px]" title={creatorName}>{creatorName}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-xs space-y-1">
+                        <div><span className="text-gray-400">Created:</span> {formatDate(test.createdAt)}</div>
+                        <div><span className="text-gray-400">Updated:</span> {formatDate(test.updatedAt)}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${test.isPublished ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
+                          {test.isPublished ? 'Published' : 'Draft'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right space-x-3">
+                        <Link href={`/teacher/test/${test._id}/results`} className="text-indigo-600 hover:text-indigo-900 font-medium">Results</Link>
+                        {test.createdBy === userId && (
+                          <Link href={`/teacher/create-test/${test._id}`} className="text-gray-500 hover:text-gray-900 font-medium">Edit</Link>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

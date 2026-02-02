@@ -46,7 +46,7 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
                     href="/teacher"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900"
                   >
-                    Dashboard
+                    All Tests
                   </Link>
                   <Link
                     href="/teacher/create-test"

@@ -162,9 +162,17 @@ export async function updateTest(prevState: any, formData: FormData) {
     await Test.findOneAndUpdate(
       { _id: testId, createdBy: userId },
       {
-        ...validated.data,
-        sections: sectionsWithRefs,
-        // Do not update isPublished or other status fields blindly if not intended
+        $set: {
+          ...validated.data,
+          sections: sectionsWithRefs,
+        },
+        $push: {
+          versionHistory: {
+            modifiedAt: new Date(),
+            modifiedBy: userId,
+            action: 'update',
+          },
+        },
       }
     );
   } catch (e) {

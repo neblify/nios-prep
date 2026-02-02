@@ -4,7 +4,7 @@ import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 interface NavbarProps {
-  variant?: 'student' | 'teacher';
+  variant?: 'student' | 'teacher' | 'admin';
 }
 
 export default function Navbar({ variant = 'student' }: NavbarProps) {
@@ -40,7 +40,7 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
                     Profile
                   </Link>
                 </>
-              ) : (
+              ) : variant === 'teacher' ? (
                 <>
                   <Link
                     href="/teacher"
@@ -53,6 +53,15 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
                     className="text-sm font-medium text-gray-600 hover:text-gray-900"
                   >
                     Create Test
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/admin"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900"
+                  >
+                    Overview
                   </Link>
                 </>
               )}
@@ -70,6 +79,6 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
           </div>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 }

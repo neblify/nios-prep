@@ -43,6 +43,12 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
               ) : variant === 'teacher' ? (
                 <>
                   <Link
+                    href="/dashboard"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
                     href="/teacher"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900"
                   >

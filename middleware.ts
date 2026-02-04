@@ -10,6 +10,14 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
+  const isDev = process.env.NODE_ENV === 'development';
+  const hasMockSession = request.cookies.get('mock_session');
+
+  // If in dev mode and we have a mock session, bypass Clerk protection
+  if (isDev && hasMockSession) {
+    return;
+  }
+
   if (!isPublicRoute(request)) {
     await auth.protect();
   }

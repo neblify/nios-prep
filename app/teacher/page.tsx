@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import User from '@/lib/db/models/User';
@@ -24,7 +25,7 @@ interface Props {
 
 export default async function TeacherDashboard(props: Props) {
   const searchParams = await props.searchParams;
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
 
   if (!userId) {
     redirect('/');

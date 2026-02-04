@@ -1,9 +1,10 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import Question from '@/lib/db/models/Question';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 

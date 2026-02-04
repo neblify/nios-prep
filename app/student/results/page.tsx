@@ -1,13 +1,14 @@
-import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Result from '@/lib/db/models/Result';
-import Link from 'next/link';
-import { formatDate } from '@/lib/utils';
-import { FileText, ArrowRight } from 'lucide-react';
+import Test from '@/lib/db/models/Test';
 import { redirect } from 'next/navigation';
+import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
+import { FileText, ArrowRight } from 'lucide-react';
 
-export default async function StudentResultsPage() {
-    const { userId } = await auth();
+export default async function StudentResults() {
+    const { userId } = await currentAuth();
     if (!userId) redirect('/sign-in');
 
     await dbConnect();

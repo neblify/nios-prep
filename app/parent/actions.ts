@@ -1,13 +1,14 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import User from '@/lib/db/models/User';
 import Result from '@/lib/db/models/Result';
 import Test from '@/lib/db/models/Test';
 
 export async function getStudentResults(email: string) {
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
   if (!userId) return { error: 'Unauthorized' };
 
   await dbConnect();
@@ -38,7 +39,7 @@ export async function getStudentResults(email: string) {
 }
 
 export async function getLinkedStudents() {
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
   if (!userId) return { error: 'Unauthorized' };
 
   await dbConnect();

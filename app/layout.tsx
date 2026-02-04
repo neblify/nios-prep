@@ -7,6 +7,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { Footer } from './_components/landing/Footer';
 
+import { DevTools } from './_components/DevTools';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -40,6 +42,7 @@ export default function RootLayout({
             Skip to main content
           </a>
           {children}
+          <DevTools />
           <Footer />
           <Analytics />
           <SpeedInsights />

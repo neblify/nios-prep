@@ -1,18 +1,23 @@
-import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
-import Result, { IResult } from '@/lib/db/models/Result';
+import Result from '@/lib/db/models/Result';
 import Test from '@/lib/db/models/Test';
-import Question from '@/lib/db/models/Question'; // Register Question model
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
-export default async function ResultPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { userId } = await auth();
+interface Props {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function ResultPage(props: Props) {
+  const params = await props.params;
+  const { userId } = await currentAuth();
   if (!userId) redirect('/sign-in');
 
   const { id } = await params;

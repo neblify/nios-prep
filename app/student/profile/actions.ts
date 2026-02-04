@@ -1,12 +1,13 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import User from '@/lib/db/models/User';
 import { revalidatePath } from 'next/cache';
 
 export async function updateProfile(formData: FormData) {
-    const { userId } = await auth();
+    const { userId } = await currentAuth();
     if (!userId) return { success: false, message: 'Unauthorized' };
 
     const board = formData.get('board') as string;

@@ -1,4 +1,5 @@
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import Question from '@/lib/db/models/Question'; // Ensure model is registered
@@ -7,13 +8,25 @@ import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, User, CheckCircle, XCircle } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
-export default async function TestResultsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { userId } = await auth();
+interface Props {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function TestResultsPage(props: Props) {
+  const params = await props.params;
+  const { userId } = await currentAuth();
   if (!userId) redirect('/sign-in');
 
   const { id } = await params;
@@ -95,12 +108,12 @@ export default async function TestResultsPage({
             <p className="text-3xl font-bold text-indigo-600 mt-2">
               {results.length > 0
                 ? Math.round(
-                    results.reduce(
-                      (acc: number, curr: any) =>
-                        acc + (curr.totalScore / curr.maxScore) * 100,
-                      0
-                    ) / results.length
-                  )
+                  results.reduce(
+                    (acc: number, curr: any) =>
+                      acc + (curr.totalScore / curr.maxScore) * 100,
+                    0
+                  ) / results.length
+                )
                 : 0}
               %
             </p>

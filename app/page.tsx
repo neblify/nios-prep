@@ -1,11 +1,12 @@
 import { auth, clerkClient } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import { redirect } from 'next/navigation';
 import { Hero } from './_components/landing/Hero';
 import { Features } from './_components/landing/Features';
 import { RoleInfo } from './_components/landing/RoleInfo';
 
 export default async function Home() {
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
 
   if (!userId) {
     return (
@@ -17,9 +18,21 @@ export default async function Home() {
     );
   }
 
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  const role = user.publicMetadata.role as string | undefined;
+  let role: string | undefined;
+
+  if (userId.startsWith('mock_')) {
+    const { default: dbConnect } = await import('@/lib/db/connect');
+    const { default: User } = await import('@/lib/db/models/User');
+    await dbConnect();
+    const dbUser = await User.findOne({ clerkId: userId });
+    if (dbUser) {
+      role = dbUser.role;
+    }
+  } else {
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+    role = user.publicMetadata.role as string | undefined;
+  }
 
   console.log('Root Page: Role found:', role);
 

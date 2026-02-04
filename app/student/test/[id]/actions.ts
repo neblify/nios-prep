@@ -1,15 +1,17 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import Question from '@/lib/db/models/Question';
 import Result from '@/lib/db/models/Result';
 import { gradeTestWithAI } from '@/lib/ai/grader';
 import { redirect } from 'next/navigation';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function submitTest(testId: string, answers: Record<string, any>) {
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
   if (!userId) return { message: 'Unauthorized' };
 
   await dbConnect();

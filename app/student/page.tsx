@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 export default async function StudentDashboard() {
-  const { userId } = await auth();
+  const { userId } = await currentAuth();
   await dbConnect();
 
   // @ts-ignore

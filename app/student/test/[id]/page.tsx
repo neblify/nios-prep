@@ -1,19 +1,24 @@
 import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import Test from '@/lib/db/models/Test';
 import Question from '@/lib/db/models/Question'; // Ensure model is registered
 import { notFound, redirect } from 'next/navigation';
 import TestTaker from './TestTaker';
+import Result from '@/lib/db/models/Result';
 
-export default async function TestPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { userId } = await auth();
+interface Props {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function TestPage(props: Props) {
+  const params = await props.params;
+  const { userId } = await currentAuth();
   if (!userId) redirect('/sign-in');
 
-  const { id } = await params;
+  const { id } = params;
 
   await dbConnect();
   // @ts-ignore

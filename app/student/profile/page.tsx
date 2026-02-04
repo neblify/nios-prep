@@ -1,11 +1,11 @@
-import { auth } from '@clerk/nextjs/server';
+import { currentAuth } from '@/lib/auth-wrapper';
 import dbConnect from '@/lib/db/connect';
 import User from '@/lib/db/models/User';
 import { redirect } from 'next/navigation';
 import UpdateProfileForm from './UpdateProfileForm';
 
 export default async function ProfilePage() {
-    const { userId } = await auth();
+    const { userId } = await currentAuth();
     if (!userId) redirect('/sign-in');
 
     await dbConnect();

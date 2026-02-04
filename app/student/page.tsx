@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { Play } from 'lucide-react';
 import User from '@/lib/db/models/User';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export default async function StudentDashboard() {
   const { userId } = await auth();
@@ -59,44 +62,42 @@ export default async function StudentDashboard() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {tests.map((test: any) => (
-          <div
-            key={test._id}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow group"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
-                  {test.title}
-                </h3>
-                <span className="inline-block bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded-full mt-1">
-                  {test.subject}
-                </span>
+          <Card key={test._id} className="hover:shadow-md transition-shadow group border-gray-100">
+            <CardHeader className="pb-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="font-semibold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors">
+                    {test.title}
+                  </CardTitle>
+                  <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 mt-2">
+                    {test.subject}
+                  </Badge>
+                </div>
               </div>
-            </div>
-
-            <div className="text-sm text-gray-500 space-y-2">
-              <p>
-                {(test.questions?.length || 0) +
-                  (test.sections?.reduce(
-                    (acc: number, section: any) =>
-                      acc + (section.questions?.length || 0),
-                    0
-                  ) || 0)}{' '}
-                Questions
-              </p>
-              <p>Added on {formatDate(test.createdAt)}</p>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-gray-50">
-              <Link
-                href={`/student/test/${test._id}`}
-                className="flex items-center justify-center gap-2 w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors"
-              >
-                <Play className="h-4 w-4" />
-                Start Test
-              </Link>
-            </div>
-          </div>
+            </CardHeader>
+            <CardContent className="pb-4">
+              <div className="text-sm text-gray-500 space-y-2">
+                <p>
+                  {(test.questions?.length || 0) +
+                    (test.sections?.reduce(
+                      (acc: number, section: any) =>
+                        acc + (section.questions?.length || 0),
+                      0
+                    ) || 0)}{' '}
+                  Questions
+                </p>
+                <p>Added on {formatDate(test.createdAt)}</p>
+              </div>
+            </CardContent>
+            <CardFooter className="pt-0">
+              <Button asChild className="w-full bg-indigo-600 hover:bg-indigo-700">
+                <Link href={`/student/test/${test._id}`}>
+                  <Play className="h-4 w-4 mr-2" />
+                  Start Test
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
         ))}
 
         {tests.length === 0 && (
@@ -108,3 +109,4 @@ export default async function StudentDashboard() {
     </div>
   );
 }
+

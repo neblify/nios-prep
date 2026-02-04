@@ -6,6 +6,9 @@ import { Plus, Search, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { redirect } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 export const dynamic = 'force-dynamic';
 
@@ -88,13 +91,12 @@ export default async function TeacherDashboard(props: Props) {
             Browse and manage all tests in the system.
           </p>
         </div>
-        <Link
-          href="/teacher/create-test"
-          className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          Create New Test
-        </Link>
+        <Button asChild className="bg-indigo-600 hover:bg-indigo-700">
+          <Link href="/teacher/create-test">
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Test
+          </Link>
+        </Button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -102,20 +104,20 @@ export default async function TeacherDashboard(props: Props) {
         <div className="p-4 border-b border-gray-200 bg-gray-50/50">
           <form className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
+              <Input
                 type="text"
                 name="query"
                 placeholder="Search tests..."
                 defaultValue={query}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                className="pl-10 bg-white"
               />
             </div>
 
             <select
               name="subject"
               defaultValue={subject}
-              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+              className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white h-10 min-w-[140px]"
             >
               <option value="">All Subjects</option>
               {subjects.map((s: string) => (
@@ -126,7 +128,7 @@ export default async function TeacherDashboard(props: Props) {
             <select
               name="board"
               defaultValue={board}
-              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+              className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white h-10 min-w-[140px]"
             >
               <option value="">All Boards</option>
               {boards.map((b: string) => (
@@ -137,7 +139,7 @@ export default async function TeacherDashboard(props: Props) {
             <select
               name="sort"
               defaultValue={sort}
-              className="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+              className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white h-10 min-w-[160px]"
             >
               <option value="createdAt_desc">Newest First</option>
               <option value="createdAt_asc">Oldest First</option>
@@ -145,12 +147,12 @@ export default async function TeacherDashboard(props: Props) {
               <option value="title_asc">Name (A-Z)</option>
             </select>
 
-            <button type="submit" className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+            <Button type="submit" variant="secondary" className="border border-gray-200 bg-white hover:bg-gray-50 text-gray-700">
               Apply
-            </button>
-            <Link href="/teacher" className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 flex items-center">
-              Clear
-            </Link>
+            </Button>
+            <Button asChild variant="ghost" className="text-gray-500 hover:text-gray-700">
+              <Link href="/teacher">Clear</Link>
+            </Button>
           </form>
         </div>
 
@@ -187,8 +189,8 @@ export default async function TeacherDashboard(props: Props) {
                         {test.title}
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="font-medium text-gray-900">{test.subject}</span>
+                        <div className="flex flex-col items-start gap-1">
+                          <Badge variant="outline" className="font-medium text-gray-900 bg-white">{test.subject}</Badge>
                           <span className="text-gray-400 text-xs">{test.board} {test.grade && `• Class ${test.grade}`}</span>
                         </div>
                       </td>
@@ -208,10 +210,11 @@ export default async function TeacherDashboard(props: Props) {
                         <div><span className="text-gray-400">Updated:</span> {formatDate(test.updatedAt)}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${test.isPublished ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
+                        <Badge variant={test.isPublished ? "default" : "secondary"} className={test.isPublished ? "bg-green-100 text-green-700 hover:bg-green-200 border-green-200" : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border-yellow-200"}>
                           {test.isPublished ? 'Published' : 'Draft'}
-                        </span>
+                        </Badge>
                       </td>
+
                       <td className="px-6 py-4 text-right space-x-3">
                         <Link href={`/teacher/test/${test._id}/results`} className="text-indigo-600 hover:text-indigo-900 font-medium">Results</Link>
                         {test.createdBy === userId && (

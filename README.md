@@ -20,7 +20,7 @@ Built with **Next.js**, **MongoDB**, **Clerk**, and **Groq AI**.
 - **Secure Authentication**:
   - Powered by **Clerk** (Sign In / Sign Up).
 - **Modern UI**:
-  - Built with **Tailwind CSS** and **Framer Motion** for a responsive and smooth experience.
+  - Built with **Tailwind CSS**, **Framer Motion**, and **shadcn/ui** for a responsive, accessible, and modern experience.
 
 ## 🛠 Tech Stack
 
@@ -29,7 +29,7 @@ Built with **Next.js**, **MongoDB**, **Clerk**, and **Groq AI**.
 - **Database**: MongoDB (via Mongoose)
 - **Auth**: [Clerk](https://clerk.com/)
 - **AI/LLM**: [Groq SDK](https://groq.com/) (Llama-3.3-70b-versatile)
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS, shadcn/ui
 - **Validation**: Zod & React Hook Form
 
 ## ⚙️ Environment Variables
@@ -104,6 +104,7 @@ npm test
 ## 📂 Project Structure
 
 - `app/`: Next.js App Router pages and layouts.
+  - `globals.css`: Global styles (includes shadcn/ui variables).
   - `sign-in/`, `sign-up/`: Authentication pages.
   - `student/`: Student dashboard and learning interface.
   - `teacher/`: Teacher dashboard and test creation.
@@ -113,6 +114,8 @@ npm test
 - `lib/`: Shared utilities.
   - `db/`: MongoDB connection and Mongoose models (`User`, `Test`, `Result`).
   - `ai/`: Groq AI integration logic (`grader.ts`).
+- `components/`:
+  - `ui/`: Reusable shadcn/ui components (Button, Card, Badge, etc.).
 - `public/`: Static assets.
 
 ## 🤝 Contributing

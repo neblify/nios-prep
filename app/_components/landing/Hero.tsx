@@ -3,6 +3,9 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 export function Hero() {
   return (
@@ -15,9 +18,9 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-600 w-fit mb-4">
+              <Badge variant="secondary" className="px-3 py-1 text-sm font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 mb-4 w-fit">
                 🚀 Smart Prep for NIOS Exams
-              </div>
+              </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Master Your Exams with AI-Powered Intelligence
               </h1>
@@ -33,19 +36,17 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-10 gap-4 flex flex-col sm:flex-row"
             >
-              <Link
-                href="/sign-up"
-                className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:text-lg shadow-lg hover:shadow-xl transition-all"
-              >
-                Start Learning Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                href="/sign-in"
-                className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-50 md:py-4 md:text-lg hover:border-gray-300 transition-all"
-              >
-                Welcome Back
-              </Link>
+              <Button asChild size="lg" className="px-8 py-6 text-base font-medium md:text-lg shadow-lg hover:shadow-xl transition-all bg-indigo-600 hover:bg-indigo-700">
+                <Link href="/sign-up">
+                  Start Learning Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="px-8 py-6 text-base font-medium md:text-lg bg-white hover:bg-gray-50 text-gray-900 border-gray-200">
+                <Link href="/sign-in">
+                  Welcome Back
+                </Link>
+              </Button>
             </motion.div>
           </div>
           <div className="mt-10 md:mt-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
@@ -67,7 +68,7 @@ export function Hero() {
 
               <div className="relative flex justify-center items-center h-full">
                 {/* Placeholder for a hero image or illustration - using a constructed UI mockup for now */}
-                <div className="relative bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-gray-100 max-w-md w-full mx-4">
+                <Card className="relative bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-2xl border-gray-100 max-w-md w-full mx-4">
                   <div className="flex items-center border-b border-gray-100 pb-4 mb-4">
                     <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
                       <BookOpen className="h-6 w-6 text-indigo-600" />
@@ -96,7 +97,7 @@ export function Hero() {
                       <div className="text-xs text-blue-700">Accuracy</div>
                     </div>
                   </div>
-                </div>
+                </Card>
               </div>
             </motion.div>
           </div>
@@ -105,3 +106,4 @@ export function Hero() {
     </div>
   );
 }
+

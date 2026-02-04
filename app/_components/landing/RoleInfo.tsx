@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { GraduationCap, School, UserCheck } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const roles = [
   {
@@ -65,41 +66,46 @@ export function RoleInfo() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="flex flex-col rounded-2xl border border-gray-200 bg-white p-8 shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div
-                className={`flex h-12 w-12 items-center justify-center rounded-xl ${role.color} mb-6`}
-              >
-                <role.icon className={`h-6 w-6 ${role.iconColor}`} />
-              </div>
-              <h3 className="text-xl font-semibold leading-7 text-gray-900">
-                {role.title}
-              </h3>
-              <p className="mt-4 flex-auto text-base leading-7 text-gray-600">
-                {role.description}
-              </p>
-              <ul className="mt-8 space-y-3">
-                {role.benefits.map(benefit => (
-                  <li
-                    key={benefit}
-                    className="flex gap-x-3 text-sm text-gray-600"
+              <Card className="flex flex-col h-full border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl ${role.color} mb-4`}
                   >
-                    <svg
-                      className={`h-6 w-5 flex-none ${role.iconColor}`}
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
+                    <role.icon className={`h-6 w-6 ${role.iconColor}`} />
+                  </div>
+                  <CardTitle className="text-xl font-semibold leading-7 text-gray-900">
+                    {role.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="flex-auto text-base leading-7 text-gray-600 mb-6">
+                    {role.description}
+                  </p>
+                  <ul className="space-y-3">
+                    {role.benefits.map(benefit => (
+                      <li
+                        key={benefit}
+                        className="flex gap-x-3 text-sm text-gray-600"
+                      >
+                        <svg
+                          className={`h-6 w-5 flex-none ${role.iconColor}`}
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
@@ -107,3 +113,4 @@ export function RoleInfo() {
     </div>
   );
 }
+

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { updateProfile } from './actions';
 import { useRouter } from 'next/navigation';
-import { BOARDS, getGradesForBoard } from '@/lib/constants';
+import { BOARDS } from '@/lib/constants/boards';
+import { getGradesForBoard } from '@/lib/constants/levels';
 
 export default function UpdateProfileForm({
     initialBoard,

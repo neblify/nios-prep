@@ -58,15 +58,3 @@ export async function getQuestions() {
     return JSON.parse(JSON.stringify(questions));
 }
 
-export async function getAnalytics() {
-    await dbConnect();
-    // Simple analytics: Results created over time (e.g., last 7 days)
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    const recentResults = await Result.find({
-        createdAt: { $gte: sevenDaysAgo }
-    }).sort({ createdAt: 1 });
-
-    return JSON.parse(JSON.stringify(recentResults));
-}

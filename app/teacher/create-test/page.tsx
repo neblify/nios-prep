@@ -26,7 +26,8 @@ const QUESTION_TYPES = [
   { value: 'difference', label: 'Difference Between' },
 ];
 
-import { BOARDS, getGradesForBoard } from '@/lib/constants';
+import { BOARDS } from '@/lib/constants/boards';
+import { getGradesForBoard } from '@/lib/constants/levels';
 
 export default function CreateTestPage() {
   const [state, formAction] = useActionState(createTest, null);

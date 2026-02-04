@@ -18,11 +18,8 @@ const QUESTION_TYPES = [
   { value: 'difference', label: 'Difference Between' },
 ];
 
-const BOARDS = ['NIOS', 'CBSE', 'ICSE', 'State Board'];
-const NIOS_LEVELS = ['A', 'B', 'C'];
-const STANDARD_LEVELS = Array.from({ length: 12 }, (_, i) =>
-  (i + 1).toString()
-);
+import { BOARDS } from '@/lib/constants/boards';
+import { NIOS_LEVELS, STANDARD_LEVELS, getGradesForBoard } from '@/lib/constants/levels';
 
 const generateId = () =>
   Math.random().toString(36).substring(2, 15) +
@@ -313,17 +310,11 @@ export default function CreateOrEditTestPage() {
                   onChange={e => setGrade(e.target.value)}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900 bg-white"
                 >
-                  {board === 'NIOS'
-                    ? NIOS_LEVELS?.map(l => (
-                        <option key={l} value={l}>
-                          Level {l}
-                        </option>
-                      ))
-                    : STANDARD_LEVELS?.map(l => (
-                        <option key={l} value={l}>
-                          Class {l}
-                        </option>
-                      ))}
+                  {getGradesForBoard(board)?.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 

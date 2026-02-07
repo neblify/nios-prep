@@ -58,7 +58,7 @@ export default function OnboardingPage() {
                     ? 'border-indigo-500 ring-2 ring-indigo-500'
                     : 'border-gray-200'
                 }`}
-                onClick={() => setSelectedRole(role)}
+                onClick={() => { setSelectedRole(role); }}
               >
                 <input
                   type="radio"
@@ -67,7 +67,7 @@ export default function OnboardingPage() {
                   className="sr-only"
                   required
                   checked={selectedRole === role}
-                  onChange={() => setSelectedRole(role)}
+                  onChange={() => { setSelectedRole(role); }}
                 />
                 <span className="flex flex-1">
                   <span className="flex flex-col">

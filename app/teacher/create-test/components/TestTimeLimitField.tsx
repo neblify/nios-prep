@@ -24,7 +24,7 @@ export function TestTimeLimitField({ value, onChange }: Props) {
             type="radio"
             name="isTimed"
             checked={value.isTimed === 'timed'}
-            onChange={() => onChange({ ...value, isTimed: 'timed' })}
+            onChange={() => { onChange({ ...value, isTimed: 'timed' }); }}
             className="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <span className="text-gray-700">Timed</span>
@@ -34,7 +34,7 @@ export function TestTimeLimitField({ value, onChange }: Props) {
             type="radio"
             name="isTimed"
             checked={value.isTimed === 'not_timed'}
-            onChange={() => onChange({ ...value, isTimed: 'not_timed' })}
+            onChange={() => { onChange({ ...value, isTimed: 'not_timed' }); }}
             className="rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <span className="text-gray-700">Not Timed</span>

@@ -20,7 +20,7 @@ export default async function ResultPage(props: Props) {
   const { userId } = await currentAuth();
   if (!userId) redirect('/sign-in');
 
-  const { id } = await params;
+  const { id } =  params;
 
   await dbConnect();
   // @ts-ignore

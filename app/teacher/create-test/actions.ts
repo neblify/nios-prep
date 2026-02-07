@@ -37,7 +37,7 @@ const createTestSchema = z.object({
   sections: z.array(sectionSchema).min(1, 'At least one section is required'),
 });
 
-export async function createTest(prevState: any, formData: FormData) {
+export async function createTest(prevState: unknown, formData: FormData) {
   const { userId } = await currentAuth();
 
   if (!userId) {
@@ -127,7 +127,7 @@ export async function createTest(prevState: any, formData: FormData) {
   redirect('/teacher');
 }
 
-export async function updateTest(prevState: any, formData: FormData) {
+export async function updateTest(prevState: unknown, formData: FormData) {
   const { userId } = await currentAuth();
 
   if (!userId) {

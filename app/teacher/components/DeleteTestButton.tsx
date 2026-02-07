@@ -126,7 +126,7 @@ export default function DeleteTestButton({
                         id="delete-results"
                         checked={deleteResults}
                         onCheckedChange={(checked: boolean) =>
-                          setDeleteResults(checked)
+                          { setDeleteResults(checked); }
                         }
                         className="mt-1"
                       />

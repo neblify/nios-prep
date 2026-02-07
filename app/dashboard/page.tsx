@@ -278,7 +278,15 @@ export default async function Dashboard() {
   );
 }
 
-function MetricCard({ title, value, icon, subtext, color }: any) {
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+  subtext?: string;
+  color: string;
+}
+
+function MetricCard({ title, value, icon, subtext, color }: MetricCardProps) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
       <div className="flex items-start justify-between">

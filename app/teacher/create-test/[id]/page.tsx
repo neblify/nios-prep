@@ -118,8 +118,8 @@ export default function CreateOrEditTestPage() {
             }
           }
         })
-        .catch(err => console.error(err))
-        .finally(() => setIsLoading(false));
+        .catch(err => { console.error(err); })
+        .finally(() => { setIsLoading(false); });
     }
   }, [isEditMode, testId]);
 
@@ -281,7 +281,7 @@ export default function CreateOrEditTestPage() {
           </div>
           <button
             type="button"
-            onClick={() => setIsAiModalOpen(true)}
+            onClick={() => { setIsAiModalOpen(true); }}
             className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all font-medium animate-pulse hover:animate-none"
           >
             <Sparkles className="h-5 w-5" />
@@ -308,7 +308,7 @@ export default function CreateOrEditTestPage() {
                   name="title"
                   type="text"
                   value={title}
-                  onChange={e => setTitle(e.target.value)}
+                  onChange={e => { setTitle(e.target.value); }}
                   required
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                   placeholder="e.g. Science Mid-Term"
@@ -322,7 +322,7 @@ export default function CreateOrEditTestPage() {
                 <select
                   name="board"
                   value={board}
-                  onChange={e => setBoard(e.target.value)}
+                  onChange={e => { setBoard(e.target.value); }}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900 bg-white"
                 >
                   {BOARDS?.map(b => (
@@ -340,7 +340,7 @@ export default function CreateOrEditTestPage() {
                 <select
                   name="grade"
                   value={grade}
-                  onChange={e => setGrade(e.target.value)}
+                  onChange={e => { setGrade(e.target.value); }}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 text-gray-900 bg-white"
                 >
                   {getGradesForBoard(board)?.map(option => (
@@ -359,7 +359,7 @@ export default function CreateOrEditTestPage() {
                   name="subject"
                   type="text"
                   value={subject}
-                  onChange={e => setSubject(e.target.value)}
+                  onChange={e => { setSubject(e.target.value); }}
                   required
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                   placeholder="e.g. Mathematics"
@@ -373,7 +373,7 @@ export default function CreateOrEditTestPage() {
                 <select
                   name="visibility"
                   value={visibility}
-                  onChange={e => setVisibility(e.target.value)}
+                  onChange={e => { setVisibility(e.target.value); }}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 >
                   <option value="public">Public (All Students)</option>
@@ -387,7 +387,7 @@ export default function CreateOrEditTestPage() {
 
           {/* Sections Loop */}
           <div className="space-y-8">
-            {sections?.map((section, secIndex) => (
+            {sections.map((section, secIndex) => (
               <div
                 key={section.id}
                 className="rounded-xl bg-white border border-indigo-100 shadow-md overflow-hidden"
@@ -398,7 +398,7 @@ export default function CreateOrEditTestPage() {
                       type="text"
                       value={section.title}
                       onChange={e =>
-                        updateSection(secIndex, 'title', e.target.value)
+                        { updateSection(secIndex, 'title', e.target.value); }
                       }
                       className="bg-transparent text-lg font-bold text-indigo-900 placeholder-indigo-600 focus:outline-none w-full"
                       placeholder="Section Title"
@@ -407,7 +407,7 @@ export default function CreateOrEditTestPage() {
                       type="text"
                       value={section.description}
                       onChange={e =>
-                        updateSection(secIndex, 'description', e.target.value)
+                        { updateSection(secIndex, 'description', e.target.value); }
                       }
                       className="bg-transparent text-sm text-indigo-700 placeholder-indigo-600 focus:outline-none w-full"
                       placeholder="Section Description (Optional)"
@@ -415,7 +415,7 @@ export default function CreateOrEditTestPage() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => removeSection(secIndex)}
+                    onClick={() => { removeSection(secIndex); }}
                     className="text-indigo-400 hover:text-red-500 p-1"
                   >
                     <Trash2 className="h-5 w-5" />
@@ -523,7 +523,7 @@ export default function CreateOrEditTestPage() {
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    removeQuestionExp(secIndex, qIndex)
+                                    { removeQuestionExp(secIndex, qIndex); }
                                   }
                                   className="text-gray-300 hover:text-red-500 transition-opacity"
                                 >
@@ -610,7 +610,7 @@ export default function CreateOrEditTestPage() {
                   <div className="mt-4">
                     <button
                       type="button"
-                      onClick={() => addQuestionExp(secIndex)}
+                      onClick={() => { addQuestionExp(secIndex); }}
                       className="w-full py-3 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 hover:border-indigo-400 hover:text-indigo-500 transition-colors flex items-center justify-center gap-2 font-medium"
                     >
                       <Plus className="h-4 w-4" /> Add Question to{' '}
@@ -657,7 +657,7 @@ export default function CreateOrEditTestPage() {
                 </p>
               </div>
               <button
-                onClick={() => setIsAiModalOpen(false)}
+                onClick={() => { setIsAiModalOpen(false); }}
                 className="text-white/80 hover:text-white"
               >
                 <X className="h-6 w-6" />
@@ -672,7 +672,7 @@ export default function CreateOrEditTestPage() {
                 <input
                   type="text"
                   value={aiTopic}
-                  onChange={e => setAiTopic(e.target.value)}
+                  onChange={e => { setAiTopic(e.target.value); }}
                   className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="e.g. Newton's Laws of Motion"
                   autoFocus
@@ -686,7 +686,7 @@ export default function CreateOrEditTestPage() {
                   </label>
                   <select
                     value={aiType}
-                    onChange={e => setAiType(e.target.value)}
+                    onChange={e => { setAiType(e.target.value); }}
                     className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
                   >
                     <option value="mixed">Mixed Types</option>
@@ -703,7 +703,7 @@ export default function CreateOrEditTestPage() {
                   </label>
                   <select
                     value={aiDifficulty}
-                    onChange={e => setAiDifficulty(e.target.value)}
+                    onChange={e => { setAiDifficulty(e.target.value); }}
                     className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
                   >
                     <option>Easy</option>
@@ -722,7 +722,7 @@ export default function CreateOrEditTestPage() {
                   min="1"
                   max="10"
                   value={aiCount}
-                  onChange={e => setAiCount(parseInt(e.target.value))}
+                  onChange={e => { setAiCount(parseInt(e.target.value)); }}
                   className="w-full accent-indigo-600"
                 />
               </div>

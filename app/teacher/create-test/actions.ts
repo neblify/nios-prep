@@ -44,6 +44,22 @@ export async function createTest(prevState: any, formData: FormData) {
     return { message: 'Unauthorized' };
   }
 
+  let sectionsData;
+  try {
+    const sectionsString = formData.get('sections') as string;
+
+    // Check approximate size (rough estimate: JSON string length in bytes)
+    if (sectionsString && sectionsString.length > 4.5 * 1024 * 1024) {
+      return {
+        message: 'Test data is too large. Please reduce the number of questions, remove large images, or shorten question text.',
+      };
+    }
+
+    sectionsData = JSON.parse(sectionsString || '[]');
+  } catch (error) {
+    return { message: 'Invalid test data format' };
+  }
+
   const rawData = {
     title: formData.get('title'),
     subject: formData.get('subject'),
@@ -53,7 +69,7 @@ export async function createTest(prevState: any, formData: FormData) {
     isTimed: formData.get('isTimed'),
     durationHours: formData.get('durationHours'),
     durationMinutes: formData.get('durationMinutes'),
-    sections: JSON.parse((formData.get('sections') as string) || '[]'),
+    sections: sectionsData,
   };
 
   const validated = createTestSchema.safeParse(rawData);
@@ -119,6 +135,23 @@ export async function updateTest(prevState: any, formData: FormData) {
   }
 
   const testId = formData.get('testId');
+
+  let sectionsData;
+  try {
+    const sectionsString = formData.get('sections') as string;
+
+    // Check approximate size (rough estimate: JSON string length in bytes)
+    if (sectionsString && sectionsString.length > 4.5 * 1024 * 1024) {
+      return {
+        message: 'Test data is too large. Please reduce the number of questions, remove large images, or shorten question text.',
+      };
+    }
+
+    sectionsData = JSON.parse(sectionsString || '[]');
+  } catch (error) {
+    return { message: 'Invalid test data format' };
+  }
+
   const rawData = {
     title: formData.get('title'),
     subject: formData.get('subject'),
@@ -128,7 +161,7 @@ export async function updateTest(prevState: any, formData: FormData) {
     isTimed: formData.get('isTimed'),
     durationHours: formData.get('durationHours'),
     durationMinutes: formData.get('durationMinutes'),
-    sections: JSON.parse((formData.get('sections') as string) || '[]'),
+    sections: sectionsData,
   };
 
   const validated = createTestSchema.safeParse(rawData);

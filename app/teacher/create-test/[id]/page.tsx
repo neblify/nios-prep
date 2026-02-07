@@ -182,7 +182,25 @@ export default function CreateOrEditTestPage() {
   };
 
   const handleSubmit = (formData: FormData) => {
-    formData.set('sections', JSON.stringify(sections));
+    const sectionsJson = JSON.stringify(sections);
+
+    // Estimate payload size (rough approximation in bytes)
+    const estimatedSize = new Blob([sectionsJson]).size;
+    const maxSize = 4.5 * 1024 * 1024; // 4.5 MB to stay under 5 MB limit
+
+    if (estimatedSize > maxSize) {
+      alert(
+        `Test data is too large (approximately ${(estimatedSize / 1024 / 1024).toFixed(1)} MB).\n\n` +
+          `Please reduce the test size by:\n` +
+          `• Reducing the number of questions\n` +
+          `• Shortening question text\n` +
+          `• Removing or compressing large images\n` +
+          `• Splitting into multiple smaller tests`
+      );
+      return;
+    }
+
+    formData.set('sections', sectionsJson);
     appendTimedToFormData(formData, timedState);
     if (isEditMode && testId) {
       formData.set('testId', testId);

@@ -98,7 +98,9 @@ export async function createTest(prevState: unknown, formData: FormData) {
             const questionDoc = await Question.create({
               ...q,
               createdBy: userId,
-              subject: validated.data.subject, // Inherit subject
+              subject: validated.data.subject,
+              board: validated.data.board,
+              grade: validated.data.grade,
             });
             return questionDoc._id;
           })
@@ -199,6 +201,8 @@ export async function updateTest(prevState: unknown, formData: FormData) {
               ...q,
               createdBy: userId,
               subject: validated.data.subject,
+              board: validated.data.board,
+              grade: validated.data.grade,
             });
             return questionDoc._id;
           })

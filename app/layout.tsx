@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Exam Preparation Platform',
-  description: 'Exam Preparation Platform',
+  title: 'ReWise - Smart Education Platform',
+  description: 'ReWise - Smart Education Platform',
 };
 
 export default function RootLayout({

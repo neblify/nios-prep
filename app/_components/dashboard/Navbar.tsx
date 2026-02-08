@@ -1,6 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface NavbarProps {
@@ -14,9 +15,14 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
         <div className="flex justify-between h-16">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-xl font-bold text-indigo-600">
-                NIOS Prep
-              </span>
+              <Image
+                src="/logo.png"
+                alt="ReWise"
+                width={120}
+                height={40}
+                className="h-10 w-auto"
+                priority
+              />
             </Link>
             <div className="hidden md:flex items-center gap-4">
               {variant === 'student' ? (

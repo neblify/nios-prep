@@ -41,7 +41,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-8 shadow-xl">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Welcome to NIOS Prep
+            Welcome to ReWise
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Tell us who you are to get started

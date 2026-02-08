@@ -22,14 +22,14 @@ export function Hero() {
                 variant="secondary"
                 className="px-3 py-1 text-sm font-semibold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 mb-4 w-fit"
               >
-                🚀 Smart Prep for NIOS Exams
+                🚀 Smart Prep for Your Exams
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Master Your Exams with AI-Powered Intelligence
               </h1>
               <p className="mt-4 text-xl text-gray-500">
                 Personalized learning for Students, smart tools for Teachers,
-                and insights for Parents. The all-in-one platform for NIOS
+                and insights for Parents. The all-in-one platform for exam
                 success.
               </p>
             </motion.div>

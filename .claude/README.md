@@ -1,10 +1,10 @@
-# Claude Code Setup for NIOS Prep
+# Claude Code Setup for ReWise
 
-This directory contains Claude Code specific configuration for the NIOS Prep project.
+This directory contains Claude Code specific configuration for the ReWise project.
 
 ## Project Overview
 
-NIOS Prep is a comprehensive education platform built with:
+ReWise is a comprehensive education platform built with:
 
 - Next.js 16 (App Router)
 - TypeScript

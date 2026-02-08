@@ -1,7 +1,7 @@
 {
   "project": {
-    "name": "nios-prep",
-    "description": "NIOS Prep - Smart Education Platform with Next.js, MongoDB, and AI grading",
+    "name": "rewise",
+    "description": "ReWise - Smart Education Platform with Next.js, MongoDB, and AI grading",
     "type": "nextjs",
     "framework": "nextjs"
   },

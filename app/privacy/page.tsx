@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
           </p>
           <p className="mt-2 text-sm text-gray-500">
             <strong>Website:</strong> https://nios-prep.vercel.app/ ("we", "us",
-            "our", "NIOS Prep")
+            "our", "ReWise")
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
           </p>
           <p>
             This policy applies to all visitors, users, and others who access or
-            use the NIOS Prep website and any related services (collectively,
+            use the ReWise website and any related services (collectively,
             the "Service").
           </p>
           <p>
@@ -282,7 +282,7 @@ export default function PrivacyPolicy() {
 
           <hr className="my-10 border-gray-200" />
           <p className="text-sm text-gray-500">
-            Thank you for using NIOS Prep. We value your trust.
+            Thank you for using ReWise. We value your trust.
           </p>
         </div>
       </div>

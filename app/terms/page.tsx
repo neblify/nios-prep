@@ -23,8 +23,8 @@ export default function TermsOfService() {
             **Effective Date:** January 28, 2026
           </p>
           <p className="mt-2 text-sm text-gray-500">
-            **Website:** https://nios-prep.vercel.app/ ("we", "us", "our", "NIOS
-            Prep", "the Service")
+            **Website:** https://nios-prep.vercel.app/ ("we", "us", "our",
+            "ReWise", "the Service")
           </p>
         </div>
 
@@ -45,7 +45,7 @@ export default function TermsOfService() {
           </h2>
           <p>
             These Terms constitute a legally binding agreement between you and
-            the operator of NIOS Prep. You must be at least 13 years old (or the
+            the operator of ReWise. You must be at least 13 years old (or the
             minimum age required in your country) to use the Service. By using
             the Service, you represent that you meet this age requirement.
           </p>
@@ -54,10 +54,10 @@ export default function TermsOfService() {
             2. Description of the Service
           </h2>
           <p>
-            NIOS Prep is a free educational platform that provides study
+            ReWise is a free educational platform that provides study
             materials, notes, practice questions, mock tests, and other
-            resources intended to help students prepare for NIOS (National
-            Institute of Open Schooling) examinations.
+            resources intended to help students prepare for their
+            examinations.
           </p>
           <p>
             <strong>
@@ -126,7 +126,7 @@ export default function TermsOfService() {
             <strong>
               solely for your personal, non-commercial educational use
             </strong>{' '}
-            while preparing for NIOS examinations.
+            while preparing for examinations.
           </p>
           <p>
             You may <strong>not</strong>:
@@ -180,11 +180,12 @@ export default function TermsOfService() {
               completely accurate, up-to-date, or error-free
             </li>
             <li>
-              The Service is <strong>not</strong> an official NIOS platform
+              The Service is <strong>not</strong> an official examination board
+              platform
             </li>
             <li>
               We are <strong>not</strong> affiliated with, endorsed by, or
-              connected to the National Institute of Open Schooling (NIOS)
+              connected to any official examination board
             </li>
             <li>
               Use of the Service does <strong>not</strong> guarantee passing any
@@ -193,7 +194,7 @@ export default function TermsOfService() {
           </ul>
           <p className="mt-4">
             You are solely responsible for verifying important information with
-            official NIOS sources.
+            official sources.
           </p>
 
           <h2 className="text-2xl font-bold text-gray-900 mt-10">

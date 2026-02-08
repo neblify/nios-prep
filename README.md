@@ -1,6 +1,6 @@
-# NIOS Prep - Smart Education Platform
+# ReWise - Smart Education Platform
 
-NIOS Prep is a comprehensive education platform designed to help students prepare for their exams efficiently. It features a role-based system for Students, Teachers, and Parents, offering tools for taking tests, tracking results, and receiving AI-powered grading and feedback.
+ReWise is a comprehensive education platform designed to help students prepare for their exams efficiently. It features a role-based system for Students, Teachers, and Parents, offering tools for taking tests, tracking results, and receiving AI-powered grading and feedback.
 
 Built with **Next.js**, **MongoDB**, **Clerk**, and **Groq AI**.
 

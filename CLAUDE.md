@@ -31,7 +31,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-**NIOS Prep** is a Next.js education platform with role-based testing and AI-powered grading.
+**ReWise** is a Next.js education platform with role-based testing and AI-powered grading.
 
 ### Core Architecture
 

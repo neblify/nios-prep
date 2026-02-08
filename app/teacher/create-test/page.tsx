@@ -175,7 +175,11 @@ export default function CreateTestPage() {
           description: `${aiDifficulty} - ${aiType}`,
           questions: res.data,
         };
-        setSections([...sections, newSection]);
+        const isDefaultSectionA =
+          sections.length === 1 &&
+          sections[0].title === 'Section A' &&
+          (!sections[0].questions || sections[0].questions.length === 0);
+        setSections(isDefaultSectionA ? [newSection] : [...sections, newSection]);
         setIsAiModalOpen(false);
         setAiTopic('');
       } else {

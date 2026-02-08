@@ -244,9 +244,13 @@ export default function CreateOrEditTestPage() {
           id: generateId(),
           title: `AI Generated: ${aiTopic}${timedSuffix}`,
           description: `${aiDifficulty} - ${aiType}`,
-          questions: res.data.map((q: any) => ({ ...q, id: generateId() })), // Ensure AI questions also get new unique IDs if needed, or rely on server-side ID but client-side ID is safer for lists
+          questions: res.data.map((q: any) => ({ ...q, id: generateId() })),
         };
-        setSections([...sections, newSection]);
+        const isDefaultSectionA =
+          sections.length === 1 &&
+          sections[0].title === 'Section A' &&
+          (!sections[0].questions || sections[0].questions.length === 0);
+        setSections(isDefaultSectionA ? [newSection] : [...sections, newSection]);
         setIsAiModalOpen(false);
         setAiTopic('');
       } else {

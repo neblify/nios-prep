@@ -1,16 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { QuestionType } from '@/lib/constants/question-types';
 
-enum QuestionType {
-  FILL_BLANKS = 'fill_in_blanks',
-  MATCH_COLUMNS = 'match_columns',
-  TRUE_FALSE = 'true_false',
-  SINGLE_WORD = 'single_word',
-  ONE_SENTENCE = 'one_sentence',
-  PICTURE_BASED = 'picture_based',
-  MCQ = 'mcq',
-  BRIEF_ANSWER = 'brief_answer',
-  DIFFERENCE = 'difference',
-}
+export { QuestionType };
 
 interface IQuestion extends Document {
   text: string;
@@ -23,6 +14,8 @@ interface IQuestion extends Document {
   topic?: string;
   difficulty?: 'easy' | 'medium' | 'hard';
   tags?: string[];
+  board?: string;
+  grade?: string;
   createdBy: string; // Clerk ID
   createdAt: Date;
   updatedAt: Date;
@@ -44,10 +37,14 @@ const QuestionSchema = new Schema<IQuestion>(
       default: 'medium',
     },
     tags: [{ type: String }],
+    board: { type: String },
+    grade: { type: String },
     createdBy: { type: String, required: true },
   },
   { timestamps: true }
 );
+
+QuestionSchema.index({ createdBy: 1, board: 1, subject: 1, grade: 1 });
 
 export default mongoose.models.Question ||
   mongoose.model<IQuestion>('Question', QuestionSchema);

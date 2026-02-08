@@ -11,9 +11,9 @@ export function Footer() {
           <Image
             src="/logo.png"
             alt="ReWise"
-            width={80}
-            height={28}
-            className="h-7 w-auto"
+            width={160}
+            height={56}
+            className="h-14 w-auto"
           />
           <p className="text-center text-xs leading-5 text-gray-500">
             &copy; {new Date().getFullYear()} ReWise. All rights reserved.

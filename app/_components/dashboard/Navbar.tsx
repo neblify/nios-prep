@@ -18,9 +18,9 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
               <Image
                 src="/logo.png"
                 alt="ReWise"
-                width={120}
-                height={40}
-                className="h-10 w-auto"
+                width={240}
+                height={80}
+                className="h-20 w-auto"
                 priority
               />
             </Link>
@@ -59,6 +59,12 @@ export default function Navbar({ variant = 'student' }: NavbarProps) {
                     className="text-sm font-medium text-gray-600 hover:text-gray-900"
                   >
                     All Tests
+                  </Link>
+                  <Link
+                    href="/teacher/questions"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900"
+                  >
+                    Question Bank
                   </Link>
                   <Link
                     href="/teacher/create-test"

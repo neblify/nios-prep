@@ -4,6 +4,10 @@ import React, { useActionState, useState, useEffect } from 'react';
 import { createTest } from './actions';
 import { extractQuestionsFromPdf, generateQuestionsAI } from './ai-actions';
 import {
+  DEFAULT_SECTION_TITLE,
+  isEmptyDefaultSection,
+} from './lib/sections';
+import {
   Plus,
   Trash2,
   Save,
@@ -55,7 +59,7 @@ export default function CreateTestPage() {
 
   // Sections State
   const [sections, setSections] = useState<any[]>([
-    { id: Date.now(), title: 'Section A', description: '', questions: [] },
+    { id: Date.now(), title: DEFAULT_SECTION_TITLE, description: '', questions: [] },
   ]);
 
   // AI Modal State
@@ -176,11 +180,7 @@ export default function CreateTestPage() {
           description: `${aiDifficulty} - ${aiType}`,
           questions: res.data,
         };
-        const isDefaultSectionA =
-          sections.length === 1 &&
-          sections[0].title === 'Section A' &&
-          (!sections[0].questions || sections[0].questions.length === 0);
-        setSections(isDefaultSectionA ? [newSection] : [...sections, newSection]);
+        setSections(isEmptyDefaultSection(sections) ? [newSection] : [...sections, newSection]);
         setIsAiModalOpen(false);
         setAiTopic('');
       } else {
